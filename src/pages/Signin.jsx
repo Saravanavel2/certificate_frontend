@@ -12,16 +12,7 @@ export default function Signin({ onLogin }) {
   const [agreed, setAgreed] = useState(true);
   const [showTerms, setShowTerms] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
-  const [step, setStep] = useState("auth"); // "auth" or "role"
-  const [selectedRole, setSelectedRole] = useState("Teacher");
   const [errorMsg, setErrorMsg] = useState("");
-
-  const roles = [
-    { id: 'Student', icon: 'pi-user', label: 'Student / Learner', desc: 'Validating my own skills' },
-    { id: 'Teacher', icon: 'pi-book', label: 'Teacher / Educator', desc: 'Certifying my students' },
-    { id: 'HR', icon: 'pi-briefcase', label: 'HR / Business', desc: 'Enterprise training & hiring' },
-    { id: 'Organizer', icon: 'pi-calendar', label: 'Event Organizer', desc: 'Hackathons & workshops' }
-  ];
 
   const handleAuthSubmit = (e) => {
     e?.preventDefault();
@@ -47,24 +38,19 @@ export default function Signin({ onLogin }) {
       return;
     }
 
-    if (isSignUp && step === "auth") {
-      setStep("role");
-      return;
-    }
-
-    completeLogin(isSignUp ? name : (email.split('@')[0] || "User"), email, selectedRole);
+    completeLogin(isSignUp ? name : (email.split('@')[0] || "User"), email);
   };
 
   const handleDemoLogin = () => {
-    completeLogin("Demo Admin", "admin@certlock.com", "Teacher");
+    completeLogin("Demo User", "admin@certlock.com");
   };
 
-  const completeLogin = (userName, userEmail, role) => {
+  const completeLogin = (userName, userEmail) => {
     setLoading(true);
     const userData = {
       name: userName || "CertLock User",
       email: userEmail || "user@certlock.com",
-      user_type: role || "Teacher",
+      user_type: "User",
       sub: "local-" + Date.now()
     };
 
@@ -105,7 +91,7 @@ export default function Signin({ onLogin }) {
           font-family: 'Inter', sans-serif;
         }
         .signin-container {
-          width: 100%; max-width: ${step === "auth" ? '950px' : '520px'};
+          width: 100%; max-width: 950px;
           display: flex; flex-direction: row;
           background: #070d19; border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 32px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
@@ -169,138 +155,93 @@ export default function Signin({ onLogin }) {
       <div className="signin-container">
         {/* Left Column: Form */}
         <div className="signin-content">
-          {step === "auth" ? (
-            <>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 28 }}>
-                <img src="/logo.png" alt="Logo" style={{ height: 42, width: 'auto' }} />
-                <span style={{ fontSize: '1.25rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>CertLock</span>
-              </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 28 }}>
+            <img src="/logo.png" alt="Logo" style={{ height: 42, width: 'auto' }} />
+            <span style={{ fontSize: '1.25rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>CertLock</span>
+          </div>
 
-              <h1 style={{ fontFamily: "Outfit", fontWeight: 800, fontSize: "1.8rem", color: "#fff", marginBottom: 6, lineHeight: 1.2 }}>
-                {isSignUp ? "Create your Account" : "Welcome Back"}
-              </h1>
-              <p style={{ color: "#94A3B8", fontSize: "0.9rem", marginBottom: 24 }}>
-                {isSignUp ? "Sign up with your email to start generating certificates." : "Enter your credentials to access your workspace."}
-              </p>
+          <h1 style={{ fontFamily: "Outfit", fontWeight: 800, fontSize: "1.8rem", color: "#fff", marginBottom: 6, lineHeight: 1.2 }}>
+            {isSignUp ? "Create your Account" : "Welcome Back"}
+          </h1>
+          <p style={{ color: "#94A3B8", fontSize: "0.9rem", marginBottom: 24 }}>
+            {isSignUp ? "Sign up with your email to start generating certificates." : "Enter your credentials to access your workspace."}
+          </p>
 
-              {errorMsg && (
-                <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', color: '#FCA5A5', padding: '10px 14px', borderRadius: 10, fontSize: '0.85rem', fontWeight: 600, marginBottom: 18 }}>
-                  ⚠️ {errorMsg}
-                </div>
-              )}
-
-              <form onSubmit={handleAuthSubmit}>
-                {isSignUp && (
-                  <div className="input-group">
-                    <label>Full Name</label>
-                    <input
-                      type="text"
-                      className="input-field"
-                      placeholder="John Doe"
-                      value={name}
-                      onChange={e => setName(e.target.value)}
-                    />
-                  </div>
-                )}
-
-                <div className="input-group">
-                  <label>Email Address</label>
-                  <input
-                    type="email"
-                    className="input-field"
-                    placeholder="name@company.com"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                  />
-                </div>
-
-                <div className="input-group">
-                  <label>Password</label>
-                  <div style={{ position: 'relative' }}>
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      className="input-field"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={e => setPassword(e.target.value)}
-                      style={{ paddingRight: 40 }}
-                    />
-                    <i
-                      className={`pi ${showPassword ? 'pi-eye-slash' : 'pi-eye'}`}
-                      onClick={() => setShowPassword(!showPassword)}
-                      style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', cursor: 'pointer', fontSize: '0.9rem' }}
-                    />
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '16px 0 24px' }}>
-                  <Checkbox inputId="agree" checked={agreed} onChange={e => setAgreed(e.checked)} style={{ width: 18, height: 18 }} />
-                  <label htmlFor="agree" style={{ fontSize: '0.85rem', color: agreed ? '#CBD5E1' : '#64748B', cursor: 'pointer' }}>
-                    I agree to <span onClick={(e) => { e.preventDefault(); setShowTerms(true); }} style={{ color: '#3B82F6', textDecoration: 'underline' }}>Terms</span> & <span onClick={(e) => { e.preventDefault(); setShowPrivacy(true); }} style={{ color: '#3B82F6', textDecoration: 'underline' }}>Privacy Policy</span>
-                  </label>
-                </div>
-
-                <button type="submit" className="submit-btn">
-                  {isSignUp ? "Continue to Role Selection ➔" : "Sign In to Workspace ➔"}
-                </button>
-              </form>
-
-              <button type="button" className="demo-btn" onClick={handleDemoLogin}>
-                <i className="pi pi-bolt" style={{ color: '#F59E0B' }} /> Quick Demo Login (1-Click)
-              </button>
-
-              <div style={{ marginTop: 24, textAlign: 'center', fontSize: '0.85rem', color: '#94A3B8' }}>
-                {isSignUp ? "Already have an account? " : "Don't have an account? "}
-                <span
-                  onClick={() => { setIsSignUp(!isSignUp); setErrorMsg(""); }}
-                  style={{ color: '#3B82F6', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline' }}
-                >
-                  {isSignUp ? "Sign In" : "Create Account"}
-                </span>
-              </div>
-            </>
-          ) : (
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ width: 56, height: 56, background: 'rgba(59, 130, 246, 0.1)', borderRadius: 16, margin: '0 auto 20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <i className="pi pi-users" style={{ color: '#3B82F6', fontSize: '1.5rem' }} />
-              </div>
-              <h2 style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.6rem', color: '#fff', marginBottom: 6 }}>Select Your Role</h2>
-              <p style={{ color: '#94A3B8', fontSize: '0.85rem', marginBottom: 24 }}>Choose how you plan to use CertLock</p>
-
-              <div style={{ display: 'grid', gap: 10, marginBottom: 24 }}>
-                {roles.map(r => (
-                  <div
-                    key={r.id}
-                    onClick={() => setSelectedRole(r.id)}
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px',
-                      background: selectedRole === r.id ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255,255,255,0.02)',
-                      border: selectedRole === r.id ? '1px solid #3B82F6' : '1px solid rgba(255,255,255,0.08)',
-                      borderRadius: 16, textAlign: 'left', cursor: 'pointer', transition: 'all 0.2s ease'
-                    }}
-                  >
-                    <div style={{ width: 38, height: 38, background: 'rgba(255,255,255,0.05)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <i className={`pi ${r.icon}`} style={{ color: '#3B82F6' }} />
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#fff' }}>{r.label}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{r.desc}</div>
-                    </div>
-                    {selectedRole === r.id && <i className="pi pi-check-circle" style={{ color: '#3B82F6', fontSize: '1.1rem' }} />}
-                  </div>
-                ))}
-              </div>
-
-              <div style={{ display: 'flex', gap: 10 }}>
-                <button type="button" onClick={() => setStep("auth")} style={{ flex: 1, padding: 12, background: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: 12, color: '#fff', fontWeight: 700, cursor: 'pointer' }}>
-                  ← Back
-                </button>
-                <button type="button" onClick={() => handleAuthSubmit()} className="submit-btn" style={{ flex: 2 }}>
-                  Complete Setup ✓
-                </button>
-              </div>
+          {errorMsg && (
+            <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', color: '#FCA5A5', padding: '10px 14px', borderRadius: 10, fontSize: '0.85rem', fontWeight: 600, marginBottom: 18 }}>
+              ⚠️ {errorMsg}
             </div>
           )}
+
+          <form onSubmit={handleAuthSubmit}>
+            {isSignUp && (
+              <div className="input-group">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="John Doe"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
+              </div>
+            )}
+
+            <div className="input-group">
+              <label>Email Address</label>
+              <input
+                type="email"
+                className="input-field"
+                placeholder="name@company.com"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="input-group">
+              <label>Password</label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="input-field"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  style={{ paddingRight: 40 }}
+                />
+                <i
+                  className={`pi ${showPassword ? 'pi-eye-slash' : 'pi-eye'}`}
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', cursor: 'pointer', fontSize: '0.9rem' }}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '16px 0 24px' }}>
+              <Checkbox inputId="agree" checked={agreed} onChange={e => setAgreed(e.checked)} style={{ width: 18, height: 18 }} />
+              <label htmlFor="agree" style={{ fontSize: '0.85rem', color: agreed ? '#CBD5E1' : '#64748B', cursor: 'pointer' }}>
+                I agree to <span onClick={(e) => { e.preventDefault(); setShowTerms(true); }} style={{ color: '#3B82F6', textDecoration: 'underline' }}>Terms</span> & <span onClick={(e) => { e.preventDefault(); setShowPrivacy(true); }} style={{ color: '#3B82F6', textDecoration: 'underline' }}>Privacy Policy</span>
+              </label>
+            </div>
+
+            <button type="submit" className="submit-btn">
+              {isSignUp ? "Create Account & Enter ➔" : "Sign In to Workspace ➔"}
+            </button>
+          </form>
+
+          <button type="button" className="demo-btn" onClick={handleDemoLogin}>
+            <i className="pi pi-bolt" style={{ color: '#F59E0B' }} /> Quick Demo Login (1-Click)
+          </button>
+
+          <div style={{ marginTop: 24, textAlign: 'center', fontSize: '0.85rem', color: '#94A3B8' }}>
+            {isSignUp ? "Already have an account? " : "Don't have an account? "}
+            <span
+              onClick={() => { setIsSignUp(!isSignUp); setErrorMsg(""); }}
+              style={{ color: '#3B82F6', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline' }}
+            >
+              {isSignUp ? "Sign In" : "Create Account"}
+            </span>
+          </div>
         </div>
 
         {/* Right Column: Illustration (Desktop Only) */}
