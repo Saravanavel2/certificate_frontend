@@ -144,7 +144,7 @@ function CertifyStudio() {
     const [useCustomSize, setUseCustomSize] = useState(false);
     const [customWidth, setCustomWidth] = useState(600);
     const [customHeight, setCustomHeight] = useState(400);
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({ name: 'Admin', email: 'admin@certlock.com', role: 'admin' });
     const [showQuizImport, setShowQuizImport] = useState(false);
     const [availableQuizzes, setAvailableQuizzes] = useState([]);
     const [sendEmail, setSendEmail] = useState(true);
@@ -616,7 +616,6 @@ function CertifyStudio() {
         setProgress(null);
     };
 
-    if (!user) return <Signin onLogin={setUser} />;
     if (!showApp) return <LandingPage onStartApp={() => setShowApp(true)} user={user} />;
 
     return (
