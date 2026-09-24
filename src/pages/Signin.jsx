@@ -29,7 +29,7 @@ export default function Signin() {
 
   const finishSignup = (roleId) => {
     setLoading(true);
-    const API_BASE = import.meta.env.VITE_API_URL || 'https://certify-open-9rbn.onrender.com';
+    const API_BASE = import.meta.env.VITE_API_URL || 'https://certificate-backend-sosk.onrender.com';
 
     fetch(`${API_BASE}/save-user`, {
       method: "POST",
@@ -69,7 +69,7 @@ export default function Signin() {
       setTempUser(user);
       setLoading(true);
 
-      const API_BASE = import.meta.env.VITE_API_URL || 'https://certify-open-9rbn.onrender.com';
+      const API_BASE = import.meta.env.VITE_API_URL || 'https://certificate-backend-sosk.onrender.com';
       try {
         const res = await fetch(`${API_BASE}/save-user`, {
           method: "POST",

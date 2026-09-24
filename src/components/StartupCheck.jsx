@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Loader from './Loader';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://certify-open-9rbn.onrender.com';
+const API_URL = import.meta.env.VITE_API_URL || 'https://certificate-backend-sosk.onrender.com';
 
 const StartupCheck = ({ children }) => {
     const [isReady, setIsReady] = useState(false);

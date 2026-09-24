@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import toast, { Toaster } from 'react-hot-toast';
 import AOS from 'aos';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://certify-open-9rbn.onrender.com';
+const API_BASE = import.meta.env.VITE_API_URL || 'https://certificate-backend-sosk.onrender.com';
 
 const STEP_META = {
     qrcode: { label: 'Layer 1 · QR Code Verification', icon: 'pi-qrcode', color: '#F59E0B', num: 1 },
