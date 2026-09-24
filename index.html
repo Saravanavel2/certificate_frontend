@@ -5,6 +5,54 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blockchain-Based Certificate Generation and Validation System</title>
+    <style>
+      /* Hide Netlify Drawer & Floating Badges */
+      #netlify-badge-content,
+      .netlify-badge,
+      [data-netlify-badge],
+      iframe[src*="netlify"],
+      #netlify-drawer-root,
+      .netlify-drawer-container,
+      [class*="netlify"],
+      [id*="netlify"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        width: 0 !important;
+        height: 0 !important;
+      }
+    </style>
+    <script>
+      (function() {
+        function killNetlifyBadge() {
+          try {
+            document.querySelectorAll('*').forEach(function(el) {
+              if (el.shadowRoot) {
+                el.shadowRoot.querySelectorAll('*').forEach(function(sEl) {
+                  if (sEl.textContent && sEl.textContent.includes('Powered by Netlify')) {
+                    el.remove();
+                  }
+                });
+              }
+              var txt = el.textContent || el.innerText || '';
+              if (txt.includes('Powered by Netlify') && el.children.length === 0) {
+                var parent = el.closest('div, a, button, iframe, section');
+                if (parent) parent.remove();
+                else el.remove();
+              }
+              if (el.id && el.id.toLowerCase().includes('netlify')) el.remove();
+              if (el.className && typeof el.className === 'string' && el.className.toLowerCase().includes('netlify')) el.remove();
+            });
+          } catch(e) {}
+        }
+        var obs = new MutationObserver(killNetlifyBadge);
+        obs.observe(document.documentElement, { childList: true, subtree: true });
+        window.addEventListener('DOMContentLoaded', killNetlifyBadge);
+        window.addEventListener('load', killNetlifyBadge);
+        setInterval(killNetlifyBadge, 300);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

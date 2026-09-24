@@ -1,0 +1,12 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  NETLIFY_SKIP_NETLIFY_DRAWER = "true"
+  NETLIFY_DEPLOY_OUTGOING_DISABLE_DRAWER = "true"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
