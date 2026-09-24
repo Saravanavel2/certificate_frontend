@@ -1,5 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Roboto:wght@300;400;500;700;900&family=Montserrat:wght@300;400;500;700;900&family=Playfair+Display:wght@400;700;900&family=Dancing+Script:wght@400;700&display=swap');
 
+/* Hide Netlify Badge & Drawer Widgets */
+#netlify-badge-content,
+.netlify-badge,
+[data-netlify-badge],
+iframe[src*="netlify"],
+#netlify-drawer-root,
+.netlify-drawer-container,
+div[class*="netlify-drawer"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 /* ═══════════════════════════════════════════
    AURORA DESIGN SYSTEM — TOKEN LAYER
    ═══════════════════════════════════════════ */
